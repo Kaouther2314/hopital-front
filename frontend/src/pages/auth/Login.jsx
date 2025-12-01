@@ -60,4 +60,49 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Erreur serveur' });
   }
-});
+}); 
+/*
+import { useState } from "react";
+import { authAPI } from "../services/api";
+
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const res = await authAPI.login({ email, password });
+
+      if (res.data.success) {
+        const { token, userType, user } = res.data;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("userType", userType);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        if (userType === "admin") window.location.href = "/admin/dashboard";
+        if (userType === "hospital") window.location.href = "/hospital/dashboard";
+        if (userType === "student") window.location.href = "/student/dashboard";
+        if (userType === "doctor") window.location.href = "/doctor/dashboard";
+      }
+    } catch (err) {
+      alert("Erreur: email ou mot de passe incorrect");
+    }
+  };
+
+  return (
+    <div>
+      <h1>Login</h1>
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+      <input
+        placeholder="Password"
+        type="password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={handleLogin}>Connexion</button>
+    </div>
+  );
+}
+
+export default Login;  */
+

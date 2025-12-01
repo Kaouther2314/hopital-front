@@ -42,4 +42,4 @@ const styles = {
   }
 }
 
-export default Logout
+export default Logout 
