@@ -118,9 +118,6 @@ export default function Home() {
         }}>
           <a href="#accueil" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>Accueil</a>
           <a href="#apropos" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>À propos</a>
-          <a href="#services" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>Services</a>
-          <a href="#departements" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>Départements</a>
-          <a href="#docteurs" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>Docteurs</a>
           <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontSize: '0.95rem' }}>Contact</a>
           <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.85rem' }}>
             <span>📧 contact@stagemedical.dz</span>
