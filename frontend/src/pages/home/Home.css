@@ -1,4 +1,4 @@
-/* ==================== GENERAL STYLES ==================== */
+/* ==================== GENERAL STYLES ==================== 
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ==================== BACKGROUND IMAGE ==================== */
+/* ==================== BACKGROUND IMAGE ==================== 
 .home-background {
   position: absolute;
   top: 0;
@@ -37,7 +37,7 @@
   z-index: 1;
 }
 
-/* ==================== HEADER / NAVBAR ==================== */
+/* ==================== HEADER / NAVBAR ==================== 
 .home-header {
   position: relative;
   z-index: 10;
@@ -102,7 +102,7 @@
   font-size: 0.85rem;
 }
 
-/* ==================== MAIN CONTENT AREA ==================== */
+/* ==================== MAIN CONTENT AREA ==================== 
 .home-content {
   position: relative;
   z-index: 10;
@@ -114,7 +114,7 @@
   min-height: calc(100vh - 80px);
 }
 
-/* ==================== LEFT SECTION - WELCOME ==================== */
+/* ==================== LEFT SECTION - WELCOME ==================== 
 .welcome-section {
   flex: 1;
   color: white;
@@ -136,7 +136,7 @@
   line-height: 1.6;
 }
 
-/* ==================== FEATURE CARDS ==================== */
+/* ==================== FEATURE CARDS ==================== 
 .feature-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -178,7 +178,7 @@
   line-height: 1.5;
 }
 
-/* ==================== RIGHT SECTION - LOGIN FORM ==================== */
+/* ==================== RIGHT SECTION - LOGIN FORM ==================== 
 .login-section {
   width: 100%;
   max-width: 450px;
@@ -208,7 +208,7 @@
   font-size: 0.95rem;
 }
 
-/* ==================== ERROR MESSAGE ==================== */
+/* ==================== ERROR MESSAGE ==================== 
 .error-message {
   padding: 1rem 1.25rem;
   background: #fee2e2;
@@ -228,7 +228,7 @@
   color: #dc2626;
 }
 
-/* ==================== FORM INPUTS ==================== */
+/* ==================== FORM INPUTS ==================== 
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -275,7 +275,7 @@
   color: #6b7280;
 }
 
-/* ==================== FORM OPTIONS ==================== */
+/* ==================== FORM OPTIONS ====================
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -310,7 +310,7 @@
   text-decoration: underline;
 }
 
-/* ==================== LOGIN BUTTON ==================== */
+/* ==================== LOGIN BUTTON ==================== 
 .login-button {
   width: 100%;
   padding: 1rem;
@@ -349,7 +349,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* ==================== USER TYPE BADGES ==================== */
+/* ==================== USER TYPE BADGES ==================== 
 .user-types {
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -402,7 +402,7 @@
   color: #c2410c;
 }
 
-/* ==================== FOOTER NOTE ==================== */
+/* ==================== FOOTER NOTE ==================== 
 .footer-note {
   text-align: center;
   color: white;
@@ -420,9 +420,9 @@
   z-index: 10;
   text-align: center;
 }
-
-/* ==================== RESPONSIVE DESIGN ==================== */
-@media (max-width: 1024px) {
+*/
+/*
+ @media (max-width: 1024px) {
   .home-content {
     flex-direction: column;
     padding: 2rem;
@@ -460,9 +460,9 @@
 
   .welcome-title {
     font-size: 2.5rem;
-  }
-
+  }*/
+/*
   .user-badges {
     grid-template-columns: repeat(2, 1fr);
   }
-}
+}*/
