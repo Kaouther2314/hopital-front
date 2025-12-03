@@ -1,314 +1,219 @@
-import React, { useState, useEffect } from 'react'
-import Sidebar from '../../components/Sidebar'
+import React, { useState } from 'react';
 
-const StudentDashboard = () => {
-  const [stats, setStats] = useState({
-    totalApplications: 0,
-    pendingApplications: 0,
-    acceptedApplications: 0
-  })
+// Icônes SVG personnalisées
+const HomeIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+  </svg>
+);
 
-  useEffect(() => {
-    // Simulation de données
-    setStats({
-      totalApplications: 3,
-      pendingApplications: 2,
-      acceptedApplications: 1
-    })
-  }, [])
+const UserIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
 
-  const myApplications = [
-    { 
-      id: 1, 
-      hospital: 'CHU Boumerdès', 
-      service: 'Médecine Interne', 
-      date: '15/03/2024', 
-      status: 'En attente',
-      evaluation: null
-    },
-    { 
-      id: 2, 
-      hospital: 'Hôpital Thenia', 
-      service: 'Chirurgie', 
-      date: '10/03/2024', 
-      status: 'Acceptée',
-      evaluation: '16/20'
-    },
-    { 
-      id: 3, 
-      hospital: 'Clinique Dellys', 
-      service: 'Pédiatrie', 
-      date: '12/03/2024', 
-      status: 'En attente',
-      evaluation: null
-    }
-  ]
+const ClipboardIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+  </svg>
+);
+
+export default function StudentDashboard() {
+  const levelRequirements = {
+    '3ème année': ['Médecine Interne', 'Pédiatrie', 'Chirurgie Générale'],
+    '4ème année': ['Cardiologie', 'Pneumologie', 'Gastro-entérologie', 'Néphrologie'],
+    '5ème année': ['Neurologie', 'Endocrinologie', 'Rhumatologie', 'Dermatologie', 'ORL'],
+    '6ème année': ['Gynécologie-Obstétrique', 'Urologie', 'Ophtalmologie', 'Orthopédie', 'Anesthésie-Réanimation'],
+    '7ème année': ['Urgences Médicales', 'Urgences Chirurgicales', 'Réanimation Médicale', 'Réanimation Chirurgicale', 'Médecine du Travail', 'Epidémiologie', 'Santé Publique'],
+  };
+
+  const hospitalsByService = {
+    'Médecine Interne': ['EPH Boumerdès', 'Polyclinique Boudouaou', 'Clinique El Amal Boumerdès'],
+    'Pédiatrie': ['EPH Boumerdès', 'Hôpital Mère-Enfant Boumerdès', 'Polyclinique Dellys'],
+    'Chirurgie Générale': ['EPH Boumerdès', 'Clinique Chirurgicale Boudouaou', 'Hôpital de Khemis El Khechna'],
+    'Cardiologie': ['EPH Boumerdès', 'Clinique du Cœur Boumerdès', 'Centre Médical Réghaia'],
+    'Pneumologie': ['EPH Boumerdès', 'Centre Anti-Tuberculose Boumerdès', 'Polyclinique Thénia'],
+    'Gastro-entérologie': ['EPH Boumerdès', 'Clinique Digestive Boudouaou', 'Polyclinique Corso'],
+    'Néphrologie': ['EPH Boumerdès', 'Centre Hémodialyse Boumerdès', 'Clinique Rénale Boudouaou'],
+    'Neurologie': ['EPH Boumerdès', 'Clinique Neurologique Réghaia', 'Centre Médical Dellys'],
+    'Endocrinologie': ['EPH Boumerdès', 'Polyclinique Boudouaou', 'Centre Diabète Boumerdès'],
+    'Rhumatologie': ['EPH Boumerdès', 'Clinique Rhumatologique Thénia', 'Polyclinique Khemis El Khechna'],
+    'Dermatologie': ['EPH Boumerdès', 'Clinique Dermatologique Boumerdès', 'Polyclinique Corso'],
+    'ORL': ['EPH Boumerdès', 'Clinique ORL Boudouaou', 'Centre Médical Réghaia'],
+    'Gynécologie-Obstétrique': ['EPH Boumerdès', 'Maternité Boumerdès', 'Clinique Gynécologique Boudouaou', 'Polyclinique Dellys'],
+    'Urologie': ['EPH Boumerdès', 'Clinique Urologique Réghaia', 'Hôpital Khemis El Khechna'],
+    'Ophtalmologie': ['EPH Boumerdès', 'Clinique Ophtalmologique Boumerdès', 'Centre Vision Boudouaou'],
+    'Orthopédie': ['EPH Boumerdès', 'Clinique Orthopédique Thénia', 'Centre Traumatologie Boumerdès'],
+    'Anesthésie-Réanimation': ['EPH Boumerdès', 'Clinique Chirurgicale Boudouaou', 'Hôpital Khemis El Khechna'],
+    'Urgences Médicales': ['EPH Boumerdès', 'Service Urgences Boudouaou', 'Polyclinique Corso', 'SAMU Boumerdès'],
+    'Urgences Chirurgicales': ['EPH Boumerdès', 'Clinique Chirurgicale Boudouaou', 'Hôpital Khemis El Khechna'],
+    'Réanimation Médicale': ['EPH Boumerdès', 'Clinique Réanimation Réghaia'],
+    'Réanimation Chirurgicale': ['EPH Boumerdès', 'Clinique Chirurgicale Boudouaou'],
+    'Médecine du Travail': ['Centre Médecine du Travail Boumerdès', 'Polyclinique Boudouaou', 'Centre Santé Thénia'],
+    'Epidémiologie': ['DSP Boumerdès', 'Centre Epidémiologie Boumerdès', 'Institut Santé Publique'],
+    'Santé Publique': ['DSP Boumerdès', 'Centre PMI Boumerdès', 'Polyclinique Corso', 'Centre Protection Sanitaire'],
+  };
+
+  const [studentName] = useState('Kaouther Adjou');
+  const [level, setLevel] = useState('3ème année');
+  const [availableServices, setAvailableServices] = useState(levelRequirements['3ème année']);
+  const [service, setService] = useState('Médecine Interne');
+  const [availableHospitals, setAvailableHospitals] = useState(hospitalsByService['Médecine Interne']);
+  const [hospital, setHospital] = useState(hospitalsByService['Médecine Interne'][0]);
+  const [candidatures, setCandidatures] = useState([
+    { hospital: 'EPH Boumerdès', service: 'Médecine Interne', status: 'En attente' },
+    { hospital: 'Polyclinique Boudouaou', service: 'Pédiatrie', status: 'Acceptée' },
+  ]);
+
+  function onLevelChange(e) {
+    const lvl = e.target.value;
+    setLevel(lvl);
+    const services = levelRequirements[lvl] || [];
+    setAvailableServices(services);
+    const newService = services[0] || '';
+    setService(newService);
+    setAvailableHospitals(hospitalsByService[newService] || []);
+    setHospital((hospitalsByService[newService] || [])[0] || '');
+  }
+
+  function onServiceChange(e) {
+    const srv = e.target.value;
+    setService(srv);
+    const hospitals = hospitalsByService[srv] || [];
+    setAvailableHospitals(hospitals);
+    setHospital(hospitals[0] || '');
+  }
+
+  function onApply() {
+    if (!service || !hospital) return alert('Veuillez choisir un service et un hôpital.');
+    const newApp = { hospital, service, status: 'En attente' };
+    setCandidatures(prev => [newApp, ...prev]);
+  }
 
   return (
-    <div style={styles.container}>
-      <Sidebar />
-      <div style={styles.content}>
-        <h1>Tableau de Bord Étudiant</h1>
-        
-        <div style={styles.welcomeSection}>
-          <h2>Bienvenue, Étudiant</h2>
-          <p>Gérez vos candidatures de stage et consultez vos évaluations</p>
-        </div>
+    <div className="app-root">
+      <aside className="sidebar">
+        <div className="brand">MedStage</div>
+        <nav>
+          <a className="nav-link"> <HomeIcon /> <span>Dashboard</span></a>
+          <a className="nav-link"> <UserIcon /> <span>Mon Profil</span></a>
+          <a className="nav-link"> <ClipboardIcon /> <span>Mes Candidatures</span></a>
+        </nav>
+      </aside>
 
-        <div style={styles.statsGrid}>
-          <div style={styles.statCard}>
-            <h3>Total candidatures</h3>
-            <p style={styles.statNumber}>{stats.totalApplications}</p>
-            <span style={styles.statLabel}>Candidatures soumises</span>
+      <main className="main-area">
+        <header className="header">
+          <h1>Dashboard Étudiant</h1>
+          <div className="user">
+            <UserIcon size={36} />
+            <div className="user-name">{studentName}</div>
           </div>
-          
-          <div style={styles.statCard}>
-            <h3>En attente</h3>
-            <p style={styles.statNumber}>{stats.pendingApplications}</p>
-            <span style={styles.statLabel}>Réponses attendues</span>
-          </div>
-          
-          <div style={styles.statCard}>
-            <h3>Acceptées</h3>
-            <p style={styles.statNumber}>{stats.acceptedApplications}</p>
-            <span style={styles.statLabel}>Stages confirmés</span>
-          </div>
-        </div>
+        </header>
 
-        <div style={styles.recentActivity}>
-          <h3>Mes candidatures</h3>
-          <p style={styles.subtitle}>Consultez l'état de vos candidatures de stage</p>
-          
-          <div style={styles.tableContainer}>
-            <table style={styles.table}>
-              <thead>
-                <tr style={styles.tableHeader}>
-                  <th style={styles.th}>Établissement</th>
-                  <th style={styles.th}>Service</th>
-                  <th style={styles.th}>Date candidature</th>
-                  <th style={styles.th}>Statut</th>
-                  <th style={styles.th}>Évaluation</th>
-                  <th style={styles.th}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {myApplications.map(app => (
-                  <tr key={app.id} style={styles.tableRow}>
-                    <td style={styles.td}><strong>{app.hospital}</strong></td>
-                    <td style={styles.td}>{app.service}</td>
-                    <td style={styles.td}>{app.date}</td>
-                    <td style={styles.td}>
-                      <span style={{
-                        ...styles.status,
-                        ...(app.status === 'Acceptée' ? styles.statusAccepted : styles.statusPending)
-                      }}>
-                        {app.status}
-                      </span>
-                    </td>
-                    <td style={styles.td}>
-                      {app.evaluation ? (
-                        <strong style={{ color: '#27ae60' }}>{app.evaluation}</strong>
-                      ) : (
-                        <span style={{ color: '#95a5a6' }}>-</span>
-                      )}
-                    </td>
-                    <td style={styles.td}>
-                      <button style={styles.actionButton}>
-                        Voir détails
-                      </button>
-                    </td>
-                  </tr>
+        <section className="card apply-card">
+          <h2>Postuler à un Stage</h2>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Année scolaire</label>
+              <select value={level} onChange={onLevelChange}>
+                {Object.keys(levelRequirements).map(l => (
+                  <option key={l} value={l}>{l}</option>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </select>
+            </div>
 
-        <div style={{...styles.recentActivity, marginTop: '2rem'}}>
-          <h3>Instructions pour les étudiants</h3>
-          <div style={styles.instructionsContainer}>
-            <div style={styles.instructionItem}>
-              <div style={styles.instructionNumber}>1</div>
-              <div>
-                <h4 style={styles.instructionTitle}>Création de compte</h4>
-                <p style={styles.instructionText}>Utilisez le compte créé par l'administration avec vos identifiants.</p>
-              </div>
+            <div className="form-group">
+              <label>Services demandés (selon l&apos;année)</label>
+              <select value={service} onChange={onServiceChange}>
+                {availableServices.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
             </div>
-            
-            <div style={styles.instructionItem}>
-              <div style={styles.instructionNumber}>2</div>
-              <div>
-                <h4 style={styles.instructionTitle}>Compléter votre profil</h4>
-                <p style={styles.instructionText}>Renseignez les informations nécessaires et téléchargez les documents requis (CV, relevés de notes, tests).</p>
-              </div>
-            </div>
-            
-            <div style={styles.instructionItem}>
-              <div style={styles.instructionNumber}>3</div>
-              <div>
-                <h4 style={styles.instructionTitle}>Rechercher des stages</h4>
-                <p style={styles.instructionText}>Veuillez noter que les stages affichés ne correspondent pas nécessairement aux différents établissements.</p>
-              </div>
-            </div>
-            
-            <div style={styles.instructionItem}>
-              <div style={styles.instructionNumber}>4</div>
-              <div>
-                <h4 style={styles.instructionTitle}>Soumettre des candidatures</h4>
-                <p style={styles.instructionText}>Soumettez des candidatures pour les stages qui vous intéressent.</p>
-              </div>
-            </div>
-            
-            <div style={styles.instructionItem}>
-              <div style={styles.instructionNumber}>5</div>
-              <div>
-                <h4 style={styles.instructionTitle}>Suivi en temps réel</h4>
-                <p style={styles.instructionText}>Accédez au suivi en temps réel de vos candidatures et consultez les retours d'évaluation.</p>
-              </div>
+
+            <div className="form-group">
+              <label>Choisir Hôpital</label>
+              <select value={hospital} onChange={e => setHospital(e.target.value)}>
+                {availableHospitals.map(h => (
+                  <option key={h} value={h}>{h}</option>
+                ))}
+              </select>
             </div>
           </div>
-        </div>
-      </div>
+
+          <div className="actions">
+            <button className="btn-primary" onClick={onApply}>Envoyer Candidature</button>
+          </div>
+        </section>
+
+        <section className="card table-card">
+          <h2>Mes Candidatures</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Hôpital</th>
+                <th>Service</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              {candidatures.map((c, i) => (
+                <tr key={i}>
+                  <td>{c.hospital}</td>
+                  <td>{c.service}</td>
+                  <td className={`status ${c.status === 'Acceptée' ? 'green' : c.status === 'Refusée' ? 'red' : 'orange'}`}>{c.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </main>
+
+      <style>{`
+        * { box-sizing: border-box; }
+        .app-root { display: flex; height: 100vh; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: #f6f8fb; }
+        .sidebar { width: 260px; background: #ffffff; padding: 28px; border-right: 1px solid #edf0f4; display: flex; flex-direction: column; }
+        .brand { font-size: 20px; font-weight: 700; color: #2563eb; margin-bottom: 20px; }
+        nav { display:flex; flex-direction:column; gap:12px; }
+        .nav-link { display:flex; align-items:center; gap:10px; color:#475569; padding:10px; border-radius:8px; text-decoration:none; cursor:pointer; }
+        .nav-link:hover { background: #f1f5f9; color:#1e40af; }
+
+        .main-area { flex:1; padding:28px; overflow:auto; }
+        .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+        .header h1 { font-size:24px; margin:0; }
+        .user { display:flex; gap:12px; align-items:center; color:#334155; }
+        .user-name { font-weight:600; }
+
+        .card { background:#fff; border-radius:12px; padding:18px; box-shadow: 0 6px 18px rgba(15,23,42,0.04); margin-bottom:18px; }
+        .apply-card h2, .table-card h2 { margin-top:0; margin-bottom:12px; }
+
+        .form-row { display:flex; gap:16px; flex-wrap:wrap; }
+        .form-group { flex:1 1 240px; display:flex; flex-direction:column; }
+        label { font-size:13px; color:#64748b; margin-bottom:6px; }
+        select { padding:10px 12px; border:1px solid #e6edf3; border-radius:8px; background:#fcfdff; }
+
+        .actions { margin-top:12px; }
+        .btn-primary { background:#2563eb; color:#fff; padding:10px 16px; border-radius:8px; border:0; cursor:pointer; font-weight:600; }
+        .btn-primary:hover { background:#1e40af; }
+
+        table { width:100%; border-collapse:collapse; }
+        th, td { text-align:left; padding:12px 8px; border-bottom:1px solid #eef2f6; color:#0f172a; }
+        th { color:#475569; font-weight:600; }
+
+        .status.green { color:#16a34a; font-weight:700; }
+        .status.red { color:#dc2626; font-weight:700; }
+        .status.orange { color:#d97706; font-weight:700; }
+
+        @media (max-width:900px){
+          .sidebar{display:none}
+          .form-row{flex-direction:column}
+        }
+      `}</style>
     </div>
-  )
+  );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    minHeight: '100vh'
-  },
-  content: {
-    flex: 1,
-    padding: '2rem',
-    backgroundColor: '#f8f9fa'
-  },
-  welcomeSection: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '8px',
-    marginBottom: '2rem',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  statsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem'
-  },
-  statCard: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    textAlign: 'center'
-  },
-  statNumber: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: '#3498db',
-    margin: '0.5rem 0'
-  },
-  statLabel: {
-    fontSize: '0.875rem',
-    color: '#666'
-  },
-  recentActivity: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  subtitle: {
-    color: '#666',
-    marginTop: '0.25rem',
-    marginBottom: '1.5rem'
-  },
-  tableContainer: {
-    overflowX: 'auto'
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse'
-  },
-  tableHeader: {
-    backgroundColor: '#f8f9fa',
-    borderBottom: '2px solid #dee2e6'
-  },
-  th: {
-    padding: '1rem',
-    textAlign: 'left',
-    fontWeight: '600',
-    color: '#495057',
-    fontSize: '0.875rem',
-    textTransform: 'uppercase'
-  },
-  tableRow: {
-    borderBottom: '1px solid #dee2e6',
-    transition: 'background-color 0.2s'
-  },
-  td: {
-    padding: '1rem',
-    color: '#212529'
-  },
-  status: {
-    padding: '0.25rem 0.75rem',
-    borderRadius: '12px',
-    fontSize: '0.875rem',
-    fontWeight: 'bold',
-    display: 'inline-block'
-  },
-  statusPending: {
-    backgroundColor: '#fff3cd',
-    color: '#856404'
-  },
-  statusAccepted: {
-    backgroundColor: '#d4edda',
-    color: '#155724'
-  },
-  actionButton: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    transition: 'background-color 0.2s'
-  },
-  instructionsContainer: {
-    marginTop: '1.5rem'
-  },
-  instructionItem: {
-    display: 'flex',
-    gap: '1.5rem',
-    marginBottom: '1.5rem',
-    alignItems: 'flex-start'
-  },
-  instructionNumber: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    backgroundColor: '#3498db',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    fontSize: '1.25rem',
-    flexShrink: 0
-  },
-  instructionTitle: {
-    margin: '0 0 0.5rem 0',
-    color: '#2c3e50',
-    fontSize: '1.1rem'
-  },
-  instructionText: {
-    margin: 0,
-    color: '#7f8c8d',
-    lineHeight: '1.6'
-  }
-}
-
-export default StudentDashboard
